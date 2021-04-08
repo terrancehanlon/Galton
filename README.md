@@ -1,7 +1,7 @@
 ### umn CSCI 4511w final project
 
 # Engine Core Components
-#### The goal of a chess engine is to analyze the current state of the board in order to make the best move poisibile. This engine consists of two hard-working components, the `evaluation` function and the `search` function.
+#### The goal of a chess engine is to analyze the current state of the board in order to make the best move possibile. This engine consists of two hard-working components, the `evaluation` function and the `search` function.
 
 <br/>
 
