@@ -30,4 +30,3 @@ class Engine:
 
     def minimax(self, board):
         print()
-c
