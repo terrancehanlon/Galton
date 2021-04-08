@@ -6,7 +6,7 @@
 class Engine:
 
     def evaluate_pieces(self, pieces1, pieces2):
-        return 200 * (pieces1['K'] - pieces2['K']) + 9 * (pieces1['Q'] - pieces2['Q']) + 5 * (pieces1['R'] - pieces2['R']) + 3 * (pieces1['B'] - pieces2['B']) + 1 * (pieces1['P'] - pieces2['P'])
+        return 200 * (pieces1['K'] - pieces2['K']) + 9 * (pieces1['Q'] - pieces2['Q']) + 5 * (pieces1['R'] - pieces2['R']) + 3 * (pieces1['B'] - pieces2['B']) + 3 * (pieces1['N'] - pieces2['N']) + 1 * (pieces1['P'] - pieces2['P'])
 
     def simple_evaluate_board(self, board, w_pieces, b_pieces):
         w_eval_dict = {}
@@ -30,3 +30,4 @@ class Engine:
 
     def minimax(self, board):
         print()
+c
