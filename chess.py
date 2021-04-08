@@ -5,6 +5,8 @@ class Chess:
         self.board = {}
         self.w_pieces = []
         self.b_pieces = []
+        self.file_value = {}
+        # self._value
 
     def insert_piece(self, info):
         self.board[info['location']] = {"type": info['type'], "is_player": info['is_player'], "location":  info['location']}
@@ -93,8 +95,18 @@ class Chess:
         self.w_pieces.append({"type": "K", "is_player": True, "location": 'E1'})
         self.b_pieces.append({"type": "K", "is_player": False, "location": 'E8'})
 
+    # rank = row numbers
+    def get_rank(self, location):
+        return int(location[1])
+
+    # file = column letters
+    def get_file(self, location):
+        return location[0]
+
     # info : {from: str, to: str}
     def move(self,info):
+        if self.is_valid_move(info) is False:
+            return -1
         p = self.board[info['from']]
         self.board[info['from']] = 0
         self.board[info['to']] = p
@@ -105,6 +117,40 @@ class Chess:
                 if _p['location'] == info['from']:
                     print('location is from')
                     _p['location'] = info['to']
+    
+    # info {from: str, to: str}
+    def is_valid_move(self, info):
+        p = self.board[info['from']]
+        # Pawn
+        if p['type'] == 'P':
+            if p['is_player']:
+                if self.get_rank(info['to']) - self.get_rank(info['from']) == 1:
+                    #move forward 1 without taking
+                    if self.get_file(info['from']) == self.get_file(info['to']):
+                        if self.board[info['to']] == 0:
+                            print("VALID MOVE")
+                            return True
+                elif self.get_rank(info['to']) - self.get_rank(info['from']) == 2:
+                    #move forward 2 without taking
+                    if self.get_file(info['from']) == self.get_file(info['to']):
+                        if self.board[info['to']] == 0:
+                            print("VALID MOVE")
+                            return True
+            
+        
+        if ['type'] == 'K':
+            pass
+        if ['type'] == 'Q':
+            pass
+        if ['type'] == 'N':
+            pass
+        if ['type'] == 'R':
+            pass
+        if ['type'] == 'B':
+
+            pass
+        print("NOT VALID MOVE")
+        return False
 
 
     def init_pieces(self):

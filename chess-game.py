@@ -8,7 +8,7 @@ engine = Engine()
 
 game.init_empty_board()
 game.init_pieces()
-game.move({'from': 'A2', 'to': 'A4'})
+game.move({'from': 'A2', 'to': 'A5'})
 printer.simple_print(game.board)
 printer.info_print(game.board)
 
