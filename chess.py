@@ -1,4 +1,5 @@
 
+from mover import Mover
 
 class Chess:
     def __init__(self):
@@ -6,6 +7,7 @@ class Chess:
         self.w_pieces = []
         self.b_pieces = []
         self.file_value = {}
+        self.mover = Mover()
         # self._value
 
     def insert_piece(self, info):
@@ -175,33 +177,17 @@ class Chess:
                     # going to left
                     if self.get_rank(info['from']) < self.get_rank(info['to']):
                         # going positive
-                        z = 1
-                        j = 'A'
-                        for i in range(1, x2_minus_x1 + 1):
-                            j = self.check_prev_file(info)
-                            z = self.get_rank(info['from']) + 1
-                            if self.board[str(j) + str(z)] != 0:
-                                if i == x2_minus_x1:
-                                    if not self.board[str(j) + str(z)]['is_player']:
-                                        return True
-                                        print("TAKE")
-                                print("NOT VALID MOVE B")
-                                return False
+                        return self.mover.diag_left_positive(info, self.board, x2_minus_x1)
                     elif self.get_rank(info['from']) > self.get_rank(info['to']):
                         # going negative
-                        z = 1
-                        j = 'A'
-                        for i in range(1, x2_minus_x1+1):
-                            j = self.check_prev_file(info)
-                            z = self.get_rank(info['from']) - 1
-                            if self.board[str(j) + str(z)] != 0:
-                                if i == x2_minus_x1:
-                                    if not self.board[str(j) + str(z)]['is_player']:
-                                        return True
-                                print("NOT VALID MOVE B")
-                                return False
-
-
+                        return self.mover.diag_left_negative(info, self.board, x2_minus_x1)
+                elif chr(ord(self.get_file(info['to']))) > chr(ord(self.get_file(info['from']))):
+                    # going right
+                    if self.get_rank(info['from']) < self.get_rank(info['to']):
+                        return self.mover.diag_right_positive(info, self.board, x2_minus_x1)
+                    elif self.get_rank(info['from']) > self.get_rank(info['to']):
+                        # going negative
+                        return self.mover.diag_right_negative(info, self.board,x2_minus_x1)
                 return True
         if ['type'] == 'K':
             pass
