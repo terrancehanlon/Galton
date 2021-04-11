@@ -118,25 +118,51 @@ class Chess:
                     print('location is from')
                     _p['location'] = info['to']
     
+    
+    # helper
+    def get_rank_distance(self, info):
+        return abs(self.get_rank(info['to']) - self.get_rank(info['from']))
+    
+    def check_next_file(self, info):
+        if info['from'] == 'H':
+            return -1
+        print("info[to] is ", info['to'], "returning", chr(ord(self.get_file(info['from'])) + 1))
+        return chr(ord(self.get_file(info['from'])) + 1)
+    
+    def check_prev_file(self, info):
+        if info['from'] == 'A':
+            return -1
+        return chr(ord(self.get_file(info['from'])) - 1)
+    
+    def square_occupied(self, info):
+        if self.board[info['to']] == 0:
+            return False
+        return True
+
     # info {from: str, to: str}
     def is_valid_move(self, info):
         p = self.board[info['from']]
         # Pawn
         if p['type'] == 'P':
-            if p['is_player']:
-                if self.get_rank(info['to']) - self.get_rank(info['from']) == 1:
-                    #move forward 1 without taking
-                    if self.get_file(info['from']) == self.get_file(info['to']):
-                        if self.board[info['to']] == 0:
-                            print("VALID MOVE")
-                            return True
-                elif self.get_rank(info['to']) - self.get_rank(info['from']) == 2:
-                    #move forward 2 without taking
-                    if self.get_file(info['from']) == self.get_file(info['to']):
-                        if self.board[info['to']] == 0:
-                            print("VALID MOVE")
-                            return True
-            
+            # if p['is_player']:
+            if self.get_rank_distance(info) == 1:
+                #move forward 1 without taking
+                if self.get_file(info['from']) == self.get_file(info['to']):
+                    if not self.square_occupied(info):
+                        print("VALID MOVE 1 up")
+                        return True
+                # move foward 1 (diag) to take
+                elif self.check_next_file(info) == self.get_file(info['to']) or self.check_prev_file(info) == self.get_file(info['to']):
+                    print("VALID MOVE ready to take")
+                    if self.square_occupied(info) and not self.board[info['to']]['is_player']:
+                        print("TAKING PIECE")
+                        return True
+            elif self.get_rank_distance(info) == 2:
+                #move forward 2 without taking
+                if self.get_file(info['from']) == self.get_file(info['to']):
+                    if self.board[info['to']] == 0:
+                        print("VALID MOVE up 2")
+                        return True
         
         if ['type'] == 'K':
             pass
@@ -147,7 +173,6 @@ class Chess:
         if ['type'] == 'R':
             pass
         if ['type'] == 'B':
-
             pass
         print("NOT VALID MOVE")
         return False
