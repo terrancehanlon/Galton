@@ -144,6 +144,7 @@ class Chess:
         p = self.board[info['from']]
         # Pawn
         if p['type'] == 'P':
+            print("MOVING PAWN")
             # if p['is_player']:
             if self.get_rank_distance(info) == 1:
                 #move forward 1 without taking
@@ -164,6 +165,43 @@ class Chess:
                         print("VALID MOVE up 2")
                         return True
         
+        if p['type'] == 'B':
+            print("moving bishop")
+            x2_minus_x1 = abs(ord(self.get_file(info['to'])) - ord(self.get_file(info['from'])))
+            y2_minus_y1 = abs(self.get_rank(info['to']) - self.get_rank(info['from']))
+            if x2_minus_x1 == y2_minus_y1:
+                # valid move check if spots are open
+                if chr(ord(self.get_file(info['to']))) < chr(ord(self.get_file(info['from']))):
+                    # going to left
+                    if self.get_rank(info['from']) < self.get_rank(info['to']):
+                        # going positive
+                        z = 1
+                        j = 'A'
+                        for i in range(1, x2_minus_x1 + 1):
+                            j = self.check_prev_file(info)
+                            z = self.get_rank(info['from']) + 1
+                            if self.board[str(j) + str(z)] != 0:
+                                if i == x2_minus_x1:
+                                    if not self.board[str(j) + str(z)]['is_player']:
+                                        print("TAKE")
+                                print("NOT VALID MOVE B")
+                                return False
+                    elif self.get_rank(info['from']) > self.get_rank(info['to']):
+                        # going negative
+                        z = 1
+                        j = 'A'
+                        for i in range(1, x2_minus_x1+1):
+                            j = self.check_prev_file(info)
+                            z = self.get_rank(info['from']) - 1
+                            if self.board[str(j) + str(z)] != 0:
+                                if i == x2_minus_x1:
+                                    if not self.board[str(j) + str(z)]['is_player']:
+                                        return True
+                                print("NOT VALID MOVE B")
+                                return False
+
+
+                return True
         if ['type'] == 'K':
             pass
         if ['type'] == 'Q':
@@ -172,8 +210,7 @@ class Chess:
             pass
         if ['type'] == 'R':
             pass
-        if ['type'] == 'B':
-            pass
+        print("type:", self.board[info['from']]['type'])
         print("NOT VALID MOVE")
         return False
 
