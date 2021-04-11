@@ -183,6 +183,7 @@ class Chess:
                             if self.board[str(j) + str(z)] != 0:
                                 if i == x2_minus_x1:
                                     if not self.board[str(j) + str(z)]['is_player']:
+                                        return True
                                         print("TAKE")
                                 print("NOT VALID MOVE B")
                                 return False
