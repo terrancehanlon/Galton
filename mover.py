@@ -29,20 +29,22 @@ class Mover:
 
     ####### diag ##########
     def diag_right_positive(self, info, board, distance):
-        if self.get_rank(info['from']) < self.get_rank(info['to']):
-            #going positive
-            z = 1
-            j = 'A'
-            for i in range(1, distance + 1):
-                j = self.check_next_file(info)
-                z = self.get_rank(info['from']) + 1
-                if board[str(j) + str(z)] != 0:
-                    if i == distance:
-                        if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
-                            #At last spot to check, and it's 
-                            return True
-                    print("NOT VALID MOVE B")
-                    return False
+        #going positive
+        z = 1
+        j = 'A'
+        for i in range(1, distance + 1):
+            j = self.check_next_file(info)
+            z = z+1
+            if board[str(j) + str(z)] != 0:
+                if i == distance:
+                    if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
+                        #At last spot to check, and it's 
+                        return True
+                    else:
+                        return False
+                print("NOT VALID MOVE B")
+                return False
+        return True
     
     def diag_right_negative(self, info, board, distance):
         # going negative
@@ -50,36 +52,127 @@ class Mover:
         j = 'A'
         for i in range(1, distance + 1):
             j = self.check_next_file(info)
-            z = self.get_rank(info['from']) - 1
+            z = z - 1
             if board[str(j) + str(z)] != 0:
                 if i == distance:
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
                         return True
+                    else:
+                        return False
                 print("not vald move b")
                 return False
+        return True
 
     def diag_left_positive(self, info, board, distance):
         z = 1
         j = 'A'
         for i in range(1, distance + 1):
             j = self.check_prev_file(info)
-            z = self.get_rank(info['from']) + 1
+            z = z + 1
             if board[str(j) + str(z)] != 0:
                 if i == distance:
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
                         return True
+                    else:
+                        return False
                 print("NOT VALID MOVE B")
                 return False
+        return True
 
     def diag_left_negative(self, info, board, distance):
         z = 1
         j = 'A'
         for i in range(1, distance+1):
             j = self.check_prev_file(info)
-            z = self.get_rank(info['from']) - 1
+            z = z - 1
             if board[str(j) + str(z)] != 0:
                 if i == distance:
-                    if board[str(j) + str(z)]['is_player'] != board[info['from']['is_player']]:
+                    if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
                         return True
+                    else:
+                        return False
                 print("NOT VALID MOVE B")
                 return False
+
+    #### UP and Down ######
+
+    def up_board(self, info, board):
+        print("IP")
+        j = self.get_file(info['from'])
+        z = self.get_rank(info['from'])
+        distance = abs( self.get_rank(info['from']) - self.get_rank(info['to']))
+        for i in range(1, distance+1):
+            z = z + 1
+            if board[str(j) + str(z)] != 0:
+                if i == distance:
+                    print("AT END")
+                    if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
+                        print("GOOD TAKES PIECE")
+                        return True
+                    else:
+                        return False
+                print("NOT VALID")
+                return False
+        print("VALID")
+        return True
+
+    def down_board(self, info, board):
+        print("Down")
+        j = self.get_file(info['from'])
+        z = self.get_rank(info['from'])
+
+        distance = abs( self.get_rank(info['from']) - self.get_rank(info['to']))
+        print("distance:", distance)
+        for i in range(1, distance + 1):
+            z = z - 1
+            if board[str(j) + str(z)] != 0:
+                if i == distance:
+                    print("AT END")
+                    if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
+                        print("GOOD TAKES PIECE")
+                        return True
+                    else:
+                        return False
+                print("NOT VALID")
+                return False
+        print("VALID")
+        return True
+
+    def right_board(self, info, board):
+        print("right")
+        j = self.get_file(info['from'])
+        z = self.get_rank(info['from'])
+        x1 = ord(self.get_file(info['to']))
+        x2 = ord(self.get_file(info['from']))
+        for i in range(1, abs(x1-x2)+1):
+            j = chr(ord(j) + 1)
+            print("j:", j)
+            if board[str(j) + str(z)] != 0:
+                if i == abs(x1-x2):
+                    if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
+                        return True
+                    else:
+                        return False
+                return False
+        return True
+
+    def left_board(self, info, board):
+        print("right")
+        j = self.get_file(info['from'])
+        z = self.get_rank(info['from'])
+        x1 = ord(self.get_file(info['to']))
+        x2 = ord(self.get_file(info['from']))
+        for i in range(1, abs(x1-x2)+1):
+            j = chr(ord(j) - 1)
+            print("j:", j)
+            if board[str(j) + str(z)] != 0:
+                if i == abs(x1-x2):
+                    if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
+                        return True
+                    else:
+                        return False
+                return False
+        return True
+
+
+

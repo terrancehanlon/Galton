@@ -128,7 +128,9 @@ class Chess:
     def check_next_file(self, info):
         if info['from'] == 'H':
             return -1
-        print("info[to] is ", info['to'], "returning", chr(ord(self.get_file(info['from'])) + 1))
+        # print("a:", chr(ord(self.get_file(info['from'])) + 1))
+        # print(info)
+        print("info[from] is ", info['from'], "Get file:", self.get_file(info['to']), "returning", chr(ord(self.get_file(info['from'])) + 1))
         return chr(ord(self.get_file(info['from'])) + 1)
     
     def check_prev_file(self, info):
@@ -155,11 +157,23 @@ class Chess:
                         print("VALID MOVE 1 up")
                         return True
                 # move foward 1 (diag) to take
-                elif self.check_next_file(info) == self.get_file(info['to']) or self.check_prev_file(info) == self.get_file(info['to']):
+                # take to right
+                elif self.check_next_file(info) == self.get_file(info['to']):
                     print("VALID MOVE ready to take")
                     if self.square_occupied(info) and not self.board[info['to']]['is_player']:
                         print("TAKING PIECE")
                         return True
+                # take to left
+                elif self.check_prev_file(info) == self.get_file(info['to']):
+                    print("VALID MOVE READU TO TALE LEFT")
+                    #bunch of extra useless checks?
+                    if self.square_occupied(info) and self.board[info['to']]['is_player'] != self.board[info['from']]['is_player']:
+                        print("TAKING PIECE")
+                        return True
+                    else:
+                        return False
+
+
             elif self.get_rank_distance(info) == 2:
                 #move forward 2 without taking
                 if self.get_file(info['from']) == self.get_file(info['to']):
@@ -172,7 +186,6 @@ class Chess:
             x2_minus_x1 = abs(ord(self.get_file(info['to'])) - ord(self.get_file(info['from'])))
             y2_minus_y1 = abs(self.get_rank(info['to']) - self.get_rank(info['from']))
             if x2_minus_x1 == y2_minus_y1:
-                # valid move check if spots are open
                 if chr(ord(self.get_file(info['to']))) < chr(ord(self.get_file(info['from']))):
                     # going to left
                     if self.get_rank(info['from']) < self.get_rank(info['to']):
@@ -189,15 +202,59 @@ class Chess:
                         # going negative
                         return self.mover.diag_right_negative(info, self.board,x2_minus_x1)
                 return True
-        if ['type'] == 'K':
+        if p['type'] == 'K':
             pass
-        if ['type'] == 'Q':
-            pass
-        if ['type'] == 'N':
-            pass
-        if ['type'] == 'R':
-            pass
-        print("type:", self.board[info['from']]['type'])
+        if p['type'] == 'Q':
+            # move on same column
+            if self.mover.get_file(info['to']) == self.mover.get_file(info['from']):
+                #move up board
+                if self.mover.get_rank(info['from']) < self.mover.get_rank(info['to']):
+                    return self.mover.up_board(info, self.board)
+                elif self.mover.get_rank(info['from']) > self.mover.get_rank(info['to']):
+                    return self.mover.down_board(info, self.board)
+            # move left or right
+            elif self.mover.get_rank(info['to']) == self.mover.get_rank(info['from']):
+                if ord(self.mover.get_file(info['from'])) < ord(self.mover.get_file(info['to'])):
+                    return self.mover.up_board(info, self.board)
+                elif ord(self.mover.get_file(info['from'])) > ord(self.mover.get_file(info['to'])):
+                    return self.mover.down_board(info, self.board)
+            else:
+                x2_minus_x1 = abs(ord(self.get_file(info['to'])) - ord(self.get_file(info['from'])))
+                y2_minus_y1 = abs(self.get_rank(info['to']) - self.get_rank(info['from']))
+                if x2_minus_x1 == y2_minus_y1:
+                    if chr(ord(self.get_file(info['to']))) < chr(ord(self.get_file(info['from']))):
+                        # going to left
+                        if self.get_rank(info['from']) < self.get_rank(info['to']):
+                            # going positive
+                            return self.mover.diag_left_positive(info, self.board, x2_minus_x1)
+                        elif self.get_rank(info['from']) > self.get_rank(info['to']):
+                            # going negative
+                            return self.mover.diag_left_negative(info, self.board, x2_minus_x1)
+                    elif chr(ord(self.get_file(info['to']))) > chr(ord(self.get_file(info['from']))):
+                        # going right
+                        if self.get_rank(info['from']) < self.get_rank(info['to']):
+                            return self.mover.diag_right_positive(info, self.board, x2_minus_x1)
+                        elif self.get_rank(info['from']) > self.get_rank(info['to']):
+                            # going negative
+                            return self.mover.diag_right_negative(info, self.board,x2_minus_x1)
+                    return True
+        if p['type'] == 'N':
+             pass
+        if p['type'] == 'R':
+            print("moving rook")
+            # Same file so same column
+            if self.mover.get_file(info['from']) == self.mover.get_file(info['to']):
+                if self.mover.get_rank(info['from']) < self.mover.get_rank(info['to']):
+                    return self.mover.up_board(info, self.board)
+                elif self.mover.get_rank(info['from']) > self.mover.get_rank(info['to']):
+                    return self.mover.down_board(info, self.board)
+            elif self.mover.get_rank(info['from']) == self.mover.get_rank(info['to']):
+                print("rank from:", self.mover.get_rank(info['from']), "rank to:", self.mover.get_rank(info['to']))
+                if ord(self.mover.get_file(info['from'])) < ord(self.mover.get_file(info['to'])):
+                    return self.mover.right_board(info, self.board)
+                elif ord(self.mover.get_file(info['from'])) > ord(self.mover.get_file(info['to'])):
+                    return self.mover.left_board(info, self.board)
+
         print("NOT VALID MOVE")
         return False
 
