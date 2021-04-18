@@ -27,6 +27,7 @@ class Mover:
             return -1
         return chr(ord(self.get_file(info['from'])) - 1)
 
+
     ####### diag ##########
     def diag_right_positive(self, info, board, distance):
         #going positive
@@ -122,31 +123,24 @@ class Mover:
         z = self.get_rank(info['from'])
 
         distance = abs( self.get_rank(info['from']) - self.get_rank(info['to']))
-        print("distance:", distance)
         for i in range(1, distance + 1):
             z = z - 1
             if board[str(j) + str(z)] != 0:
                 if i == distance:
-                    print("AT END")
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
-                        print("GOOD TAKES PIECE")
                         return True
                     else:
                         return False
-                print("NOT VALID")
                 return False
-        print("VALID")
         return True
 
     def right_board(self, info, board):
-        print("right")
         j = self.get_file(info['from'])
         z = self.get_rank(info['from'])
         x1 = ord(self.get_file(info['to']))
         x2 = ord(self.get_file(info['from']))
         for i in range(1, abs(x1-x2)+1):
             j = chr(ord(j) + 1)
-            print("j:", j)
             if board[str(j) + str(z)] != 0:
                 if i == abs(x1-x2):
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
@@ -157,14 +151,12 @@ class Mover:
         return True
 
     def left_board(self, info, board):
-        print("right")
         j = self.get_file(info['from'])
         z = self.get_rank(info['from'])
         x1 = ord(self.get_file(info['to']))
         x2 = ord(self.get_file(info['from']))
         for i in range(1, abs(x1-x2)+1):
             j = chr(ord(j) - 1)
-            print("j:", j)
             if board[str(j) + str(z)] != 0:
                 if i == abs(x1-x2):
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
@@ -176,7 +168,6 @@ class Mover:
 
     ### knight
     def hook(self, info, board):
-        print("hooking")
         # up 2 left 1
         # up 2 right 1
         # down 2 right 1
@@ -211,6 +202,50 @@ class Mover:
                 else:
                     return True
         return False
+
+    def get_all_attacked_positions(self, board, is_player):
+        attacked_positions = {}
+        
+        for key in board:
+            # print("loop board")
+            # print(key)
+            if board[key] == 0:
+                continue
+            elif board[key]['is_player'] == is_player:
+                continue
+            elif board[key]['type'] == 'R' and board[key]['is_player'] != is_player:
+                start_file = self.get_file(board[key]['location'])
+                start_rank = self.get_rank(board[key]['location'])
+                print("start file and rank", start_file, start_rank)
+                #get attacked squares on rank 
+                if start_file == 'A':
+                    if ord(chr(ord(start_file) + 2)) < ord("I"):
+                        _free_square = chr(ord(start_file) + 2) + str(start_rank)
+                        while start_file != 'I':
+                            if key == 'A4':
+                                print('key here', _free_square)
+                            if board[_free_square] == 0:
+                                if _free_square not in attacked_positions:
+                                    attacked_positions[_free_square] = 1
+                                
+                            start_file = chr(ord(start_file) + 1)
+        return attacked_positions
+                
+
+
+    def king_can_move(self, info, board):
+        print("moving king")
+        print(board[info['from']]['is_player'])
+        attacked_positions = self.get_all_attacked_positions(board, board[info['from']]['is_player'])
+        print(attacked_positions)
+        if info['to'] not in attacked_positions:
+            print("king can move")
+            return True
+        else:
+            print("king cant move")
+            return False
+            
+
 
 
 

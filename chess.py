@@ -114,6 +114,8 @@ class Chess:
         self.board[info['from']] = 0
         self.board[info['to']] = p
 
+        self.board[info['to']]['location'] = info['to']
+
         if p['is_player']:
             print("is player")
             for _p in self.w_pieces:
@@ -161,16 +163,21 @@ class Chess:
                 # take to right
                 elif self.check_next_file(info) == self.get_file(info['to']):
                     print("VALID MOVE ready to take")
-                    if self.square_occupied(info) and not self.board[info['to']]['is_player']:
+                    if self.board[info['to']]['is_player'] != self.board[info['from']]['is_player']:
                         print("TAKING PIECE")
                         return True
+                    # if self.square_occupied(info) and not self.board[info['to']]['is_player']:
+                    #     return True
                 # take to left
                 elif self.check_prev_file(info) == self.get_file(info['to']):
                     print("VALID MOVE READU TO TALE LEFT")
                     #bunch of extra useless checks?
-                    if self.square_occupied(info) and self.board[info['to']]['is_player'] != self.board[info['from']]['is_player']:
+                    if self.board[info['to']]['is_player'] != self.board[info['from']]['is_player']:
                         print("TAKING PIECE")
                         return True
+                    # if self.square_occupied(info) and self.board[info['to']]['is_player'] != self.board[info['from']]['is_player']:
+                    #     print("TAKING PIECE")
+                    #     return True
                     else:
                         return False
 
@@ -204,7 +211,17 @@ class Chess:
                         return self.mover.diag_right_negative(info, self.board,x2_minus_x1)
                 return True
         if p['type'] == 'K':
-            pass
+            # print(self.mover.get_file(info['to']))
+            # print((self.mover.get_file(['from'])))
+            if abs( ord(self.mover.get_file(info['to'])) - ord(self.mover.get_file(info['from'])) ) > 1 :
+                print("cant move king 1")
+                return False
+            if abs(self.mover.get_rank(info['to']) - self.mover.get_rank(info['from'])) > 1:
+                print("cant move king 2")
+                return False
+            else:
+                return self.mover.king_can_move(info, self.board)
+            
         if p['type'] == 'Q':
             # move on same column
             if self.mover.get_file(info['to']) == self.mover.get_file(info['from']):
