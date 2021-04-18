@@ -174,5 +174,44 @@ class Mover:
                 return False
         return True
 
+    ### knight
+    def hook(self, info, board):
+        print("hooking")
+        # up 2 left 1
+        # up 2 right 1
+        # down 2 right 1
+        # down 2 left 1
+        # right 2 up 1
+        # right 2 down 1
+        # left 2 up 1
+        # left 2 down 1
+
+        # up 2 left 1
+        x1 = self.get_file(info['from'])
+        y1 = self.get_rank(info['from'])
+        
+        x2 = self.get_file(info['to'])
+        y2 = self.get_rank(info['to'])
+
+
+        # vertical hook
+        if abs( y1 - y2) == 2:
+            if abs(ord(x1) - ord(x2)) == 1:
+                if board[info['to']] != 0:
+                    if board[info['to']]['is_player'] == False:
+                        return True
+                else:
+                    return True
+        #horizontal hook
+        if abs(ord(x1) - ord(x2)) == 2:
+            if abs(y1 - y2) == 1:
+                if board[info['to']] != 0:
+                    if board[info['to']]['is_player'] == False:
+                        return True
+                else:
+                    return True
+        return False
+
+
 
 

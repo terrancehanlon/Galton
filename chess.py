@@ -108,6 +108,7 @@ class Chess:
     # info : {from: str, to: str}
     def move(self,info):
         if self.is_valid_move(info) is False:
+            print("Not valid mve~")
             return -1
         p = self.board[info['from']]
         self.board[info['from']] = 0
@@ -239,7 +240,7 @@ class Chess:
                             return self.mover.diag_right_negative(info, self.board,x2_minus_x1)
                     return True
         if p['type'] == 'N':
-             pass
+            return self.mover.hook(info, self.board)
         if p['type'] == 'R':
             print("moving rook")
             # Same file so same column
