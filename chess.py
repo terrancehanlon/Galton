@@ -11,7 +11,7 @@ class Chess:
         # self._value
 
     def insert_piece(self, info):
-        self.board[info['location']] = {"type": info['type'], "is_player": info['is_player'], "location":  info['location']}
+        self.board[info['location']] = {"type": info['type'], "is_player": info['is_player'], "location":  info['location'], "id": info['id']}
 
     def init_empty_board(self):
         start_letter = 'A'
@@ -44,56 +44,58 @@ class Chess:
         start_letter = 'A'
         start_number = 2
         for i in range(1, 9):
-            self.w_pieces.append({"type": "P", "is_player": True, "location": start_letter + str(start_number)})
-            self.insert_piece({"type": "P", "is_player": True, "location": start_letter + str(start_number)})
+            _id = i + 100
+            self.w_pieces.append({"type": "P", "is_player": True, "location": start_letter + str(start_number), "id": _id})
+            self.insert_piece({"type": "P", "is_player": True, "location": start_letter + str(start_number), "id": _id})
             start_letter = chr(ord(start_letter ) + 1)
         
         start_letter = 'A'
         start_number = 7
         for i in range(1,9):
-            self.b_pieces.append({"type": "P", "is_player": False, "location": start_letter + str(start_number)})
-            self.insert_piece({"type": "P", "is_player": False, "location": start_letter + str(start_number)})
+            _id = i + 200
+            self.b_pieces.append({"type": "P", "is_player": False, "location": start_letter + str(start_number), "id": _id})
+            self.insert_piece({"type": "P", "is_player": False, "location": start_letter + str(start_number), "id": _id})
             start_letter = chr(ord(start_letter)+1)
     
     def init_bishops(self):
-        self.insert_piece({"type": "B", "is_player": True, "location": 'C1'})
-        self.insert_piece({"type": "B", "is_player": True, "location": 'F1'})
-        self.insert_piece({"type": "B", "is_player": False, "location": 'F8'})
-        self.insert_piece({"type": "B", "is_player": False, "location": 'C8'})
+        self.insert_piece({"type": "B", "id": "b1", "is_player": True, "location": 'C1'})
+        self.insert_piece({"type": "B", "id": "b2", "is_player": True, "location": 'F1'})
+        self.insert_piece({"type": "B", "id": "b3", "is_player": False, "location": 'F8'})
+        self.insert_piece({"type": "B", "id": "b4", "is_player": False, "location": 'C8'})
         self.w_pieces.append({"type": "B", "is_player": True, "location": 'C1'})
         self.w_pieces.append({"type": "B", "is_player": True, "location": 'F1'})
         self.b_pieces.append({"type": "B", "is_player": False, "location": 'F8'})
         self.b_pieces.append({"type": "B", "is_player": False, "location": 'C8'})
 
     def init_rooks(self):
-        self.insert_piece({"type": "R", "is_player": True, "location": 'A1'})
-        self.insert_piece({"type": "R", "is_player": True, "location": 'H1'})
-        self.insert_piece({"type": "R", "is_player": False, "location": 'A8'})
-        self.insert_piece({"type": "R", "is_player": False, "location": 'H8'})
+        self.insert_piece({"type": "R", "id": "r1", "is_player": True, "location": 'A1'})
+        self.insert_piece({"type": "R", "id": "r2", "is_player": True, "location": 'H1'})
+        self.insert_piece({"type": "R", "id": "r3", "is_player": False, "location": 'A8'})
+        self.insert_piece({"type": "R", "id": "r4", "is_player": False, "location": 'H8'})
         self.w_pieces.append({"type": "R", "is_player": True, "location": 'A1'})
         self.w_pieces.append({"type": "R", "is_player": True, "location": 'H1'})
         self.b_pieces.append({"type": "R", "is_player": False, "location": 'A8'})
         self.b_pieces.append({"type": "R", "is_player": False, "location": 'H8'})
 
     def init_knights(self):
-        self.insert_piece({"type": "N", "is_player": True, "location": 'B1'})
-        self.insert_piece({"type": "N", "is_player": True, "location": 'G1'})
-        self.insert_piece({"type": "N", "is_player": False, "location": 'B8'})
-        self.insert_piece({"type": "N", "is_player": False, "location": 'G8'})
+        self.insert_piece({"type": "N", "id": "n1", "is_player": True, "location": 'B1'})
+        self.insert_piece({"type": "N", "id": "n2", "is_player": True, "location": 'G1'})
+        self.insert_piece({"type": "N", "id": "n3", "is_player": False, "location": 'B8'})
+        self.insert_piece({"type": "N", "id": "n4", "is_player": False, "location": 'G8'})
         self.w_pieces.append({"type": "N", "is_player": True, "location": 'B1'})
         self.w_pieces.append({"type": "N", "is_player": True, "location": 'G1'})
         self.b_pieces.append({"type": "N", "is_player": False, "location": 'B8'})
         self.b_pieces.append({"type": "N", "is_player": False, "location": 'G8'})
 
     def init_queens(self):
-        self.insert_piece({"type": "Q", "is_player": True, "location": 'D1'})
-        self.insert_piece({"type": "Q", "is_player": False, "location": 'D8'})
+        self.insert_piece({"type": "Q", "id": "q1", "is_player": True, "location": 'D1'})
+        self.insert_piece({"type": "Q", "id": "q2", "is_player": False, "location": 'D8'})
         self.w_pieces.append({"type": "Q", "is_player": True, "location": 'D1'})
         self.b_pieces.append({"type": "Q", "is_player": False, "location": 'D8'})
 
     def init_kings(self):
-        self.insert_piece({"type": "K", "is_player": True, "location": 'E1'})
-        self.insert_piece({"type": "K", "is_player": False, "location": 'E8'})
+        self.insert_piece({"type": "K", "id": "k1", "is_player": True, "location": 'E1'})
+        self.insert_piece({"type": "K", "id": "k2", "is_player": False, "location": 'E8'})
         self.w_pieces.append({"type": "K", "is_player": True, "location": 'E1'})
         self.b_pieces.append({"type": "K", "is_player": False, "location": 'E8'})
 
