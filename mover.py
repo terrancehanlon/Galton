@@ -220,20 +220,44 @@ class Mover:
                 attacked_square = chr(ord(start_file) + 1)
                 while attacked_square != 'I':
                     if board[attacked_square + str(start_rank)] == 0:
-                        if attacked_square not in attacked_positions:
-                            attacked_positions[attacked_square] = 1
+                        if  attacked_square + str(start_rank) not in attacked_positions:
+                            print("is attacked square", attacked_square + str(start_rank))
+                            attacked_positions[attacked_square + str(start_rank)] = 1
+                        attacked_square = chr(ord(attacked_square) + 1)
                     else:
                         break
-                    attacked_square = chr(ord(attacked_square) + 1)
                 #get attacked squares to the left of hook
                 attacked_square = self.get_file(board[key]['location'])
+                attacked_square = chr(ord(start_file) - 1)
                 while attacked_square >= 'A':
+                    print(attacked_square + str(start_rank))
                     if board[attacked_square + str(start_rank)]  == 0:
-                        if attacked_square not in attacked_positions:
-                            attacked_positions[attacked_square] = 1
-                        else:
-                            break
-                    attacked_square = chr(ord(attacked_square) - 1)
+                        if attacked_square + str(start_rank) not in attacked_positions:
+                            attacked_positions[attacked_square + str(start_rank)] = 1
+                        attacked_square = chr(ord(attacked_square) - 1)
+                    else:
+                        break
+                #get attacked squares below rook
+                attacked_square = self.get_file(board[key]['location'])
+                attacked_square = chr(ord(start_file))
+                attacked_rank = self.get_rank(board[key]['location']) - 1
+                while attacked_rank >= 0:
+                    if board[attacked_square + str(attacked_rank)] == 0:
+                        if attacked_square + str(attacked_rank) not in attacked_positions:
+                            attacked_positions[attacked_square + str(attacked_rank)] = 1
+                        attacked_rank = attacked_rank - 1
+                    else:
+                        break
+                #get attacked squares below rook
+                # attacked_square = self.get_file(board[key]['location'])
+                # attacked_rank = self.get_rank(board[key]['location'])
+                # while int(attacked_rank) > 0:
+                #     if board[attacked_square + str(attacked_rank)] == 0:
+                #         if attacked_square + str(attacked_rank) not in attacked_positions:
+                #             attacked_positions[attacked_square + str(attacked_rank)] = 1
+                #     else:
+                #         break
+
                 # if ord(chr(ord(start_file) + 2)) < ord("I"):
                 #     _free_square = chr(ord(start_file) + 2) + str(start_rank)
                 #     while start_file < 'I':
@@ -285,7 +309,7 @@ class Mover:
                 #         _free_square = start_file + str(start_file - 2)
 
 
-
+        print(attacked_positions)
         return attacked_positions
                 
 
