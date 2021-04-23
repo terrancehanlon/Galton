@@ -207,8 +207,6 @@ class Mover:
         attacked_positions = {}
         
         for key in board:
-            # print("loop board")
-            # print(key)
             if board[key] == 0:
                 continue
             elif board[key]['is_player'] == is_player:
@@ -241,72 +239,40 @@ class Mover:
                 attacked_square = self.get_file(board[key]['location'])
                 attacked_square = chr(ord(start_file))
                 attacked_rank = self.get_rank(board[key]['location']) - 1
-                while attacked_rank >= 0:
+                while attacked_rank > 0:
                     if board[attacked_square + str(attacked_rank)] == 0:
                         if attacked_square + str(attacked_rank) not in attacked_positions:
                             attacked_positions[attacked_square + str(attacked_rank)] = 1
                         attacked_rank = attacked_rank - 1
                     else:
                         break
-                #get attacked squares below rook
-                # attacked_square = self.get_file(board[key]['location'])
-                # attacked_rank = self.get_rank(board[key]['location'])
-                # while int(attacked_rank) > 0:
-                #     if board[attacked_square + str(attacked_rank)] == 0:
-                #         if attacked_square + str(attacked_rank) not in attacked_positions:
-                #             attacked_positions[attacked_square + str(attacked_rank)] = 1
-                #     else:
-                #         break
 
-                # if ord(chr(ord(start_file) + 2)) < ord("I"):
-                #     _free_square = chr(ord(start_file) + 2) + str(start_rank)
-                #     while start_file < 'I':
-                #         if key == 'A4':
-                #             print('key here', _free_square)
-                #         if board[chr(ord(start_file) + 1) + str(start_rank)] == 0:
-                #             print("No block")
-                #             if _free_square not in attacked_positions:
-                #                 attacked_positions[_free_square] = 1
-                #         else:
-                #             print("something blocking")
-                #             break
-                #         _free_square = chr(ord(start_file) + 1) + str(start_rank)
-                #         start_file = chr(ord(start_file) + 1)
-                #         print("bnew file", start_file)
-                # start_file = self.get_file(board[key]['location'])
-                # start_rank = self.get_rank(board[key]['location'])
-                # left
-                # if ord(chr(ord(start_file) + 2)) >= ord("A"):
-                #     _free_square = chr(ord(start_file) - 2) + str(start_rank)
-                #     while start_file > 'A':
-                #         if board[_free_square] == 0:
-                #             if _free_square not in attacked_positions:
-                #                 attacked_positions[_free_square] = 1
-                #         else:
-                #             break
-                #         _free_square = chr(ord(start_file) - 1) + str(start_rank)
-                #         start_file = chr(ord(start_file) - 1)
+                #get attacked squares above rook
+                attacked_square = self.get_file(board[key]['location'])
+                attacked_square = chr(ord(start_file))
+                attacked_rank = self.get_rank(board[key]['location']) + 1
+                while attacked_rank <= 8:
+                    if board[attacked_square + str(attacked_rank)] == 0:
+                        if attacked_square + str(attacked_rank) not in attacked_positions:
+                            attacked_positions[attacked_square + str(attacked_rank)] = 1
+                        attacked_rank = attacked_rank + 1
+                    else:
+                        break
+            elif board[key]['type'] == 'B' and board[key]['is_player'] != 'B' and board[key]['is_player'] != is_player:
+                #upper right diag
+                attacked_square = chr(ord(self.get_file(board[key]['location'])) + 1)
+                attacked_rank = self.get_rank(board[key]['location']) + 1
+                while attacked_square != 'I':
+                    if board[attacked_square + str(attacked_rank)] == 0:
+                        if attacked_square + str(attacked_rank) not in attacked_positions:
+                            attacked_positions[attacked_square + str(attacked_rank)] = 1
+                        attacked_rank = attacked_rank + 1
+                        attacked_square = chr(ord(attacked_square) + 1)
+                    else:
+                        break
 
-                # up
-                # start_file = self.get_file(board[key]['location'])
-                # start_rank = self.get_rank(board[key]['location'])
-                # if start_rank + 2 <= 8:
-                #     while start_rank <= 8:
-                #         _free_square = start_file + str(start_rank + 2)
-                #         if board[_free_square] == 0:
-                #             if _free_square not in attacked_positions:
-                #                 attacked_positions[_free_square] = 1
-                #             else:
-                #                 break
-                #         start_rank = start_rank + 1
-                    
-                # start_file = self.get_file(board[key]['location'])
-                # start_rank = self.get_rank(board[key]['location'])
 
-                # #down
-                # if start_rank - 2 >= 0:
-                #     while start_rank >= 0:
-                #         _free_square = start_file + str(start_file - 2)
+                
 
 
         print(attacked_positions)
@@ -316,7 +282,6 @@ class Mover:
 
     def king_can_move(self, info, board):
         print("moving king")
-        print(board[info['from']]['is_player'])
         attacked_positions = self.get_all_attacked_positions(board, board[info['from']]['is_player'])
         print(attacked_positions)
         if info['to'] not in attacked_positions:

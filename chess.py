@@ -215,12 +215,16 @@ class Chess:
         if p['type'] == 'K':
             # print(self.mover.get_file(info['to']))
             # print((self.mover.get_file(['from'])))
+
             if abs( ord(self.mover.get_file(info['to'])) - ord(self.mover.get_file(info['from'])) ) > 1 :
                 print("cant move king 1")
                 return False
             if abs(self.mover.get_rank(info['to']) - self.mover.get_rank(info['from'])) > 1:
                 print("cant move king 2")
                 return False
+            if self.board[(self.mover.get_file(info['to'])) + str(self.mover.get_rank(info['to']))] != 0:
+                if self.board[(self.mover.get_file(info['to'])) + str(self.mover.get_rank(info['to']))]['is_player'] != self.board[info['from']]['is_player']:
+                    return False
             else:
                 return self.mover.king_can_move(info, self.board)
             
