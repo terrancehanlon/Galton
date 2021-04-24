@@ -31,69 +31,81 @@ class Mover:
     ####### diag ##########
     def diag_right_positive(self, info, board, distance):
         #going positive
-        z = 1
+        z = self.get_rank(info['from'])
         j = 'A'
         for i in range(1, distance + 1):
             j = self.check_next_file(info)
             z = z+1
             if board[str(j) + str(z)] != 0:
-                if i == distance:
+                if i == (distance) or str(j) + str(z) == info['to']:
+                    print("is same ", str(j) + str(z))
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
-                        #At last spot to check, and it's 
                         return True
                     else:
+                        print(str(j) + str(z), board[str(j) + str(z)])
+                        print("NOT VALID MOVE B ested else here")
                         return False
-                print("NOT VALID MOVE B")
+            if board[str(j) + str(z)] != 0 and i < (distance + 1):
+                print("falsing")
                 return False
         return True
     
     def diag_right_negative(self, info, board, distance):
         # going negative
-        z = 1
-        j = 'A'
+        z = self.get_rank(info['from'])
+        j = self.get_file(info['from'])
         for i in range(1, distance + 1):
-            j = self.check_next_file(info)
+            j = chr(ord(j) + 1)
             z = z - 1
             if board[str(j) + str(z)] != 0:
-                if i == distance:
+                if i == (distance) or str(j) + str(z) == info['to']:
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
                         return True
                     else:
                         return False
-                print("not vald move b")
-                return False
+                if board[str(j) + str(z)] != 0 and i < (distance + 1):
+                    return False
         return True
 
     def diag_left_positive(self, info, board, distance):
-        z = 1
+        z = self.get_rank(info['from'])
         j = 'A'
         for i in range(1, distance + 1):
             j = self.check_prev_file(info)
             z = z + 1
             if board[str(j) + str(z)] != 0:
-                if i == distance:
+                if i == (distance) or str(j) + str(z) == info['to']:
+                    print("is same ")
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
                         return True
                     else:
+                        print(str(j) + str(z), board[str(j) + str(z)])
+                        print("NOT VALID MOVE B ested else")
                         return False
-                print("NOT VALID MOVE B")
+            if board[str(j) + str(z)] != 0 and i < (distance + 1):
+                print("falsing")
                 return False
         return True
 
     def diag_left_negative(self, info, board, distance):
-        z = 1
+        z = self.get_rank(info['from'])
         j = 'A'
         for i in range(1, distance+1):
             j = self.check_prev_file(info)
             z = z - 1
             if board[str(j) + str(z)] != 0:
-                if i == distance:
+                if i == (distance) or str(j) + str(z) == info['to']:
+                    print("is same ")
                     if board[str(j) + str(z)]['is_player'] != board[info['from']]['is_player']:
                         return True
                     else:
+                        print(str(j) + str(z), board[str(j) + str(z)])
+                        print("NOT VALID MOVE B ested else")
                         return False
-                print("NOT VALID MOVE B")
+            if board[str(j) + str(z)] != 0 and i < (distance + 1):
+                print("falsing")
                 return False
+        return True
 
     #### UP and Down ######
 
@@ -262,12 +274,45 @@ class Mover:
                 #upper right diag
                 attacked_square = chr(ord(self.get_file(board[key]['location'])) + 1)
                 attacked_rank = self.get_rank(board[key]['location']) + 1
-                while attacked_square != 'I':
+                while attacked_square != 'I' and attacked_rank <= 8 and attacked_rank > 0:
                     if board[attacked_square + str(attacked_rank)] == 0:
                         if attacked_square + str(attacked_rank) not in attacked_positions:
                             attacked_positions[attacked_square + str(attacked_rank)] = 1
                         attacked_rank = attacked_rank + 1
                         attacked_square = chr(ord(attacked_square) + 1)
+                    else:
+                        break
+                # down right
+                attacked_square = chr(ord(self.get_file(board[key]['location'])) + 1)
+                attacked_rank = self.get_rank(board[key]['location']) - 1
+                while attacked_square != 'I' and attacked_rank <= 8 and attacked_rank > 0:
+                    if board[attacked_square + str(attacked_rank)] == 0:
+                        if attacked_square + str(attacked_rank) not in attacked_positions:
+                            attacked_positions[attacked_square + str(attacked_rank)] = 1
+                        attacked_rank = attacked_rank - 1
+                        attacked_square = chr(ord(attacked_square) + 1)
+                    else:
+                        break
+                # up left
+                attacked_square = chr(ord(self.get_file(board[key]['location'])) - 1)
+                attacked_rank = self.get_rank(board[key]['location']) + 1
+                while attacked_square >= 'A' and attacked_rank <= 8 and attacked_rank > 0:
+                    if board[attacked_square + str(attacked_rank)] == 0:
+                        if attacked_square + str(attacked_rank) not in attacked_positions:
+                            attacked_positions[attacked_square + str(attacked_rank)] = 1
+                        attacked_rank = attacked_rank + 1
+                        attacked_square = chr(ord(attacked_square) - 1)
+                    else:
+                        break
+                # down left
+                attacked_square = chr(ord(self.get_file(board[key]['location'])) - 1)
+                attacked_rank = self.get_rank(board[key]['location']) - 1
+                while attacked_square >= 'A' and attacked_rank <= 8 and attacked_rank > 0:
+                    if board[attacked_square + str(attacked_rank)] == 0:
+                        if attacked_square + str(attacked_rank) not in attacked_positions:
+                            attacked_positions[attacked_square + str(attacked_rank)] = 1
+                        attacked_rank = attacked_rank + 1
+                        attacked_square = chr(ord(attacked_square) - 1)
                     else:
                         break
 
