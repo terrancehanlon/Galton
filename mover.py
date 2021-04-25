@@ -34,6 +34,8 @@ class Mover:
             return False
         return True
 
+    
+
     ####### diag ##########
     def diag_right_positive(self, info, board, distance):
         #going positive
@@ -456,15 +458,66 @@ class Mover:
                 if self.check_in_bounds(new_position):
                     if new_position not in attacked_positions:
                         attacked_positions[new_position] = 1
-                
+            elif board[key]['type'] == 'P' and board[key]['is_player'] != is_player:
+                start_file = self.get_file(board[key]['location'])
+                start_rank = self.get_rank(board[key]['location'])
+                #white pawns id below 200
+                if board[key]['id'] < 200:
+                    takes_right = chr(ord(start_file) + 1) + str(start_rank + 1)
+                    takes_left = chr(ord(start_file) - 1) + str(start_rank + 1)
+                    if self.check_in_bounds(takes_right):
+                        if takes_right not in attacked_positions:
+                            attacked_positions[takes_right] = 1
+                    if self.check_in_bounds(takes_left):
+                        if takes_left not in attacked_positions:
+                            attacked_positions[takes_left] = 1
+                else:
+                    takes_right = chr(ord(start_file) + 1) + str(start_rank - 1)
+                    takes_left = chr(ord(start_file) - 1) + str(start_rank - 1)
+                    if self.check_in_bounds(takes_right):
+                        if takes_right not in attacked_positions:
+                            attacked_positions[takes_right] = 1
+                    if self.check_in_bounds(takes_left):
+                        if takes_left not in attacked_positions:
+                            attacked_positions[takes_left] = 1                  
+            elif board[key]['type'] == 'K' and board[key]['is_player'] != is_player:
+                #one in every direction
+                start_file = self.get_file(board[key]['location'])
+                start_rank = self.get_rank(board[key]['location'])
+                up = start_file + str(start_rank)
+                up_diag_right = chr(ord(start_file) + 1) + str(start_rank + 1)
+                right = chr(ord(start_file) + 1) + str(start_rank)
+                down_diag_right = chr(ord(start_file) + 1) + str(start_rank - 1)
+                down = start_file + str(start_rank - 1)
+                down_left_diag = chr(ord(start_file) - 1) + str(start_rank - 1)
+                left = chr(ord(start_file) - 1) + str(start_rank)
+                left_diag_up = chr(ord(start_file) - 1) + str(start_rank + 1)
 
-                
-                    
+                if self.check_in_bounds(up):
+                    if up not in attacked_positions:
+                        attacked_positions[up] = 1
+                if self.check_in_bounds(up_diag_right):
+                    if up_diag_right not in attacked_positions:
+                        attacked_positions[up_diag_right] = 1
+                if self.check_in_bounds(right):
+                    if right not in attacked_positions:
+                        attacked_positions[right] = 1
+                if self.check_in_bounds(down_diag_right):
+                    if down_diag_right not in attacked_positions:
+                        attacked_positions[down_diag_right] = 1
+                if self.check_in_bounds(down):
+                    if down not in attacked_positions:
+                        attacked_positions[down] = 1
+                if self.check_in_bounds(down_left_diag):
+                    if down_left_diag not in attacked_positions:
+                        attacked_positions[down_left_diag] = 1
+                if self.check_in_bounds(left):
+                    if left not in attacked_positions:
+                        attacked_positions[left] = 1
+                if self.check_in_bounds(left_diag_up):
+                    if left_diag_up not in attacked_positions:
+                        attacked_positions[left_diag_up] = 1
 
-                        
-
-
-        print(attacked_positions)
         return attacked_positions
                 
 
